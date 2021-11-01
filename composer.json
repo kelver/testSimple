@@ -1,0 +1,21 @@
+{
+  "name": "vendor/testsimple",
+  "description": "Test Simple",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Kelver Machado",
+      "email": "kelver_kmv@hotmail.com"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+    "phpunit/phpunit" : "*"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "app\\" : "app/"
+    }
+  }
+}
