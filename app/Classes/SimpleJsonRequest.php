@@ -1,20 +1,27 @@
 <?php
+namespace App\Classes;
 
 class SimpleJsonRequest
 {
     private static function makeRequest(string $method, string $url, array $parameters = null, array $data = null)
     {
-        $opts = [
-            'http' => [
-                'method'  => $method,
-                'header'  => 'Content-type: application/json',
-                'content' => $data ? json_encode($data) : null
-            ]
-        ];
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $url,
+        ]);
 
-        $url .= ($parameters ? '?' . http_build_query($parameters) : '');
+        if($method != 'GET'){
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST,  $method);
+        }
 
-        return json_decode(file_get_contents($url, false, stream_context_create($opts)));
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $response;
     }
 
     public static function get(string $url, array $parameters = null)
@@ -22,7 +29,7 @@ class SimpleJsonRequest
         return self::makeRequest('GET', $url, $parameters);
     }
 
-    public static function post(string $url, array $parameters = null, array $data)
+    public static function post(string $url, array $parameters = null, array $data = null)
     {
 		return self::makeRequest('POST', $url, $parameters, $data);
     }

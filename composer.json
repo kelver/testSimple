@@ -9,13 +9,17 @@
     }
   ],
   "require": {
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit" : "*"
   },
   "autoload" : {
     "psr-4" : {
-      "app\\" : "app/"
-    }
+      "App\\" : "App/"
+    },
+    "files": [
+      "config.php"
+    ]
   }
 }
