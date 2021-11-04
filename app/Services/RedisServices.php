@@ -14,7 +14,7 @@ class RedisServices
         $this->client = new Client();
     }
 
-    protected function getResource($url)
+    protected function getResource(string $url): array
     {
         $urlParts = parse_url($url);
         $resource = explode('/', explode('api/', $urlParts['path'])[1]);
@@ -28,10 +28,6 @@ class RedisServices
     public function getCacheRedis(string $url)
     {
         $data = $this->getResource($url);
-
-        if($data['identify'] == ''){
-            $data['identify'] = '*';
-        }
 
         $cacheName = "{$data['resource']}{$data['identify']}";
         $value = $this->client->get($cacheName);
@@ -72,10 +68,9 @@ class RedisServices
                     return true;
                 }
 
-                foreach ($v as $item) {
-                    $cacheName = "{$data['resource']}:{$item->identify}";
-                    $this->client->append($cacheName, json_encode($item));
-                }
+                $cacheName = "{$data['resource']}";
+                $this->client->append($cacheName, json_encode($v));
+
             }
             return true;
         }

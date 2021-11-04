@@ -11,7 +11,6 @@ class SimpleJsonRequest
         $value = $resource->getCacheRedis($url);
 
         if($value === false || (!in_array($method, ['POST', 'GET']))) {
-            echo 'sem redis.';
             $curl = curl_init();
             curl_setopt_array($curl, [
                 CURLOPT_RETURNTRANSFER => 1,
@@ -24,7 +23,6 @@ class SimpleJsonRequest
 
             if ($method != 'GET') {
                 curl_setopt($curl, CURLOPT_POST, true);
-//                var_dump($parameters, $data, http_build_query($parameters));die();
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "{$method}");
             }

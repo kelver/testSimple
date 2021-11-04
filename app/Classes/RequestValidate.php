@@ -6,13 +6,14 @@ use PHPUnit\Util\Exception;
 
 class RequestValidate
 {
-    public static function mountRoute($request)
+    public static function mountRoute($request): array
     {
+        $parametros = [];
         try{
             if(count($request) <= 0){
                 parse_str(file_get_contents('php://input'), $request);
             }
-            
+
             if(!isset($request['link'])){
                 throw new Exception(json_encode(['erro' => ['message' => 'Unrecognized resource.']]), 404);
             }
